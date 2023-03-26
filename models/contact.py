@@ -1,8 +1,5 @@
 from src.conection_postgresql import db
 from flask_migrate import Migrate
-from app import app
-
-migrate = Migrate(app, db)
 
 
 class Contact(db.Model):
