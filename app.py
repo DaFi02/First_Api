@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from src.conection_postgresql import db
+from routes.contacts import contacts
 
 app = Flask(__name__)
 
@@ -9,7 +10,4 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+app.register_blueprint(contacts)

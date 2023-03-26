@@ -13,4 +13,6 @@ class Contact(db.Model):
     phone = db.Column(db.String(100))
 
     def __init__(self, fullname, email, phone):
-        pass
+        self.fullname = fullname
+        self.email = email
+        self.phone = phone
