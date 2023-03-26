@@ -14,4 +14,5 @@ class Contact(db.Model):
 
     def __init__(self, fullname, email, phone):
         self.fullname = fullname
-
+        self.email = email
+        self.phone = phone
