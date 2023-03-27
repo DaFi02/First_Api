@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.contact import Contact
 from src.conection_postgresql import db
 
@@ -6,8 +6,9 @@ contacts = Blueprint('contacts', __name__)
 
 
 @contacts.route('/')
-def hello_world():
-    return render_template('index.html')
+def index():
+    contacts = Contact.query.all()
+    return render_template('index.html', contacts=contacts)
 
 
 @contacts.route('/new', methods=['GET', 'POST'])
@@ -21,17 +22,37 @@ def add_contact():
     db.session.add(new_contact)
     db.session.commit()
 
-    return 'Saving Contact!'
+    flash('Contact added successfully')
+
+    return redirect(url_for('contacts.index'))
 
 
-@contacts.route('/update')
-def update_contact():
-    return 'Contact updated! and Saving Contact!'
+@contacts.route('/update/<id>', methods=['GET', 'POST'])
+def update_contact(id):
+    contact = Contact.query.get(id)
+    if request.method == 'POST':
+        contact.fullname = request.form['fullname']
+        contact.email = request.form['email']
+        contact.phone = request.form['phone']
+
+        db.session.commit()
+
+        flash('Contact updated successfully')
+
+        return redirect(url_for('contacts.index'))
+
+    return render_template('update.html', contact=contact)
 
 
-@contacts.route('/delete')
-def delete_contact():
-    return 'Contact deleted!'
+@contacts.route('/delete/<id>')
+def delete_contact(id):
+    contact = Contact.query.get(id)
+    db.session.delete(contact)
+    db.session.commit()
+
+    flash('Contact deleted successfully')
+
+    return redirect(url_for('contacts.index'))
 
 
 @contacts.route('/about')

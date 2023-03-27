@@ -5,6 +5,8 @@ from routes.contacts import contacts
 
 app = Flask(__name__)
 
+app.secret_key = 'mysecretkey'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://first_api:123456@localhost/api'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
